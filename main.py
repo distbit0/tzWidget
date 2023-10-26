@@ -2,6 +2,15 @@ import os
 import json
 import datetime
 
+
+def get_local_utc_offset():
+    """Calculate local UTC offset in hours."""
+    local_time = datetime.datetime.now()
+    utc_time = datetime.datetime.utcnow()
+    delta = local_time - utc_time
+    return round(delta.total_seconds() / 3600)
+
+
 # Get the directory of the current script
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -12,11 +21,17 @@ config_path = os.path.join(script_dir, "config.json")
 with open(config_path, "r") as f:
     name_to_timezone = json.load(f)
 
+# Automatically determine your timezone offset
+your_timezone_offset = get_local_utc_offset()
+
 # Initialize an empty string to store the output
-output_str = "[ "
+output_str = ""
 
 # Loop through the name to timezone mapping
 for name, timezone in name_to_timezone.items():
+    # Calculate the time difference between your timezone and the person's timezone
+    time_difference = int(timezone) - your_timezone_offset
+
     # Get the current UTC time
     utc_time = datetime.datetime.utcnow()
 
@@ -27,10 +42,10 @@ for name, timezone in name_to_timezone.items():
     formatted_time = local_time.strftime("%I:%M%p").lower()
 
     # Append to the output string
-    output_str += f"{name}: {formatted_time}   "
+    output_str += f"{name}{time_difference}: {formatted_time}   "
 
 output_str = output_str.strip()
-output_str += " ]"
+
 # Define the path to the output file
 output_file_path = os.path.join(script_dir, "output.txt")
 
