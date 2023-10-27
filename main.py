@@ -77,7 +77,7 @@ for name, timezone in name_to_timezone.items():
     am_pm = "am" if local_time.hour < 12 else "pm"
 
     # Append to the output string
-    output_str += f"{name}{time_difference}: {time_decimal}{am_pm}   "
+    output_str += f"({name}{time_difference}) {time_decimal}{am_pm}    "
 
 output_str = output_str.strip()
 
