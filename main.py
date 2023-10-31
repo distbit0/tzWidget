@@ -70,14 +70,14 @@ for name, timezone in name_to_timezone.items():
     local_time = utc_time + datetime.timedelta(hours=int(timezone))
 
     # Format the local time as decimal hours
-    hour = local_time.hour % 12
+    hour = local_time.hour
     minute = local_time.minute
     minute_decimal = minute / 60
     time_decimal = hour + int(minute_decimal * 10) / 10
-    am_pm = "am" if local_time.hour < 12 else "pm"
 
     # Append to the output string
-    output_str += f"({name}{time_difference}) {time_decimal}{am_pm}    "
+    output_str += f"({name}{time_difference}) {time_decimal}    "
+
 
 output_str = output_str.strip()
 
